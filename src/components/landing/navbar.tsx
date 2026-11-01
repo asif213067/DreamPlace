@@ -115,7 +115,7 @@ export function Navbar() {
           >
             Login
           </Link>
-          <Link href="/register" className="hover:text-[#0aa3bd]">
+          <Link href="/signup" className="hover:text-[#0aa3bd]">
             Sign Up
           </Link>
         </div>
