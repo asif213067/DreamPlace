@@ -41,10 +41,18 @@ function CarouselArrow({
   );
 }
 
-function Stars({ rating, name }: { rating: Testimonial["rating"]; name: string }) {
+function Stars({
+  rating,
+  name,
+  className,
+}: {
+  rating: Testimonial["rating"];
+  name: string;
+  className?: string;
+}) {
   return (
     <p
-      className="mt-4 flex gap-0.5"
+      className={cn("mt-4 flex gap-0.5", className)}
       role="img"
       aria-label={`Rated ${rating} out of 5 stars by ${name}`}
     >
@@ -65,7 +73,13 @@ function Stars({ rating, name }: { rating: Testimonial["rating"]; name: string }
 }
 
 /** Portrait with graceful fallback when the photo is missing or fails to load. */
-function Portrait({ testimonial }: { testimonial: Testimonial }) {
+function Portrait({
+  testimonial,
+  className,
+}: {
+  testimonial: Testimonial;
+  className?: string;
+}) {
   const [failed, setFailed] = useState(false);
   const initials = testimonial.name
     .split(" ")
@@ -77,7 +91,10 @@ function Portrait({ testimonial }: { testimonial: Testimonial }) {
     return (
       <div
         aria-hidden
-        className="flex h-full w-24 shrink-0 self-stretch items-center justify-center bg-neutral-200 font-serif text-2xl text-neutral-600 sm:w-28 md:w-28"
+        className={cn(
+          "flex size-28 shrink-0 items-center justify-center rounded-full bg-neutral-200 font-serif text-2xl text-neutral-600 sm:h-full sm:w-28 sm:rounded-none md:w-28",
+          className
+        )}
       >
         {initials}
       </div>
@@ -91,7 +108,10 @@ function Portrait({ testimonial }: { testimonial: Testimonial }) {
       width={218}
       height={264}
       onError={() => setFailed(true)}
-      className="h-full w-24 shrink-0 self-stretch object-cover sm:w-28 md:w-auto"
+      className={cn(
+        "size-28 shrink-0 rounded-full object-cover sm:h-full sm:w-28 sm:rounded-none md:w-auto",
+        className
+      )}
     />
   );
 }
@@ -105,16 +125,16 @@ export function Testimonials({
     <section className="py-20">
       <div className="mx-auto max-w-6xl px-6">
         <Carousel opts={{ align: "start", slidesToScroll: 1 }} className="w-full">
-          <div className="flex items-end justify-between gap-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
             <div>
-              <h2 className="font-serif text-3xl text-neutral-950 sm:text-4xl md:text-5xl">
+              <h2 className="font-serif text-[28px] text-neutral-950 sm:text-4xl md:text-5xl">
                 What Travelers Say
               </h2>
-              <p className="mt-3 text-sm text-neutral-500">
+              <p className="mt-3 text-[15px] leading-6 text-neutral-500 sm:text-sm sm:leading-5">
                 Real experiences from our happy travelers
               </p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-end gap-3">
               <CarouselArrow direction="prev" />
               <CarouselArrow direction="next" />
             </div>
@@ -126,13 +146,13 @@ export function Testimonials({
                 key={testimonial.name}
                 className="pl-8 md:basis-1/2"
               >
-                <article className="flex h-full bg-white">
-                  <div className="flex min-w-0 flex-1 flex-col p-6">
-                    <p className="font-serif text-[17px] leading-7 text-neutral-950">
-                      {testimonial.quote}
-                    </p>
-                    <Stars rating={testimonial.rating} name={testimonial.name} />
-                    <footer className="mt-auto pt-6">
+                <article className="flex h-full flex-col bg-white p-6 sm:flex-row sm:p-0">
+                  <Portrait
+                    testimonial={testimonial}
+                    className="order-1 self-center sm:order-2 sm:self-stretch"
+                  />
+                  <div className="order-2 flex min-w-0 flex-1 flex-col sm:order-1 sm:p-6">
+                    <footer className="order-1 mt-4 text-center sm:order-3 sm:mt-auto sm:pt-6 sm:text-left">
                       <p className="text-[15px] text-[#0aa3bd]">
                         &mdash; {testimonial.name}
                       </p>
@@ -140,8 +160,15 @@ export function Testimonials({
                         {testimonial.location}
                       </p>
                     </footer>
+                    <Stars
+                      rating={testimonial.rating}
+                      name={testimonial.name}
+                      className="order-2 justify-center sm:justify-start"
+                    />
+                    <p className="order-3 mt-4 text-left leading-7 font-serif text-[17px] text-neutral-950 sm:order-1 sm:mt-0">
+                      {testimonial.quote}
+                    </p>
                   </div>
-                  <Portrait testimonial={testimonial} />
                 </article>
               </CarouselItem>
             ))}

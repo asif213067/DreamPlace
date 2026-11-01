@@ -15,8 +15,8 @@ import {
 const NAV_LINKS = [
   { label: "Home", href: "/", active: true },
   { label: "Destinations", href: "/destinations", active: false },
+  { label: "Add Destination", href: "/add-destination", active: false },
   { label: "My Bookings", href: "/my-bookings", active: false },
-  { label: "Admin", href: "/admin", active: false },
 ];
 
 export function Navbar() {
